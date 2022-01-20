@@ -7,7 +7,7 @@ function PasswordGenerator(props) {
   const [copied, setCopied] = useState(false);
 
   const [password, setPassword] = useState({
-    length: 4,
+    length: 20,
     uppercase: true,
     lowercase: true,
     numbers: true,
