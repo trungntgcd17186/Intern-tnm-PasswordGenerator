@@ -50,32 +50,60 @@ function PasswordGenerator(props) {
   };
 
   const handleGeneratePassword = () => {
-    const numbersArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    const numbersArray = "1234567890";
 
-    const symbolsArray = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")"];
+    const symbolsArray = "!@#$%^&*()[]";
 
-    const characterCodes = Array.from(Array(26)).map((_e, i) => i + 97);
-    const lowerCaseLetters = characterCodes.map((code) =>
-      String.fromCharCode(code)
-    );
+    const lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
 
-    const upperCaseLetters = lowerCaseLetters.map((letter) =>
-      letter.toUpperCase()
-    );
+    const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     const { length, uppercase, lowercase, numbers, symbols } = password;
 
     const word = (length, uppercase, lowercase, numbers, symbols) => {
-      const availableCharacters = [
-        ...(uppercase ? upperCaseLetters : []),
-        ...(lowercase ? lowerCaseLetters : []),
-        ...(numbers ? numbersArray : []),
-        ...(symbols ? symbolsArray : []),
-      ];
-      const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
-      const characters = shuffleArray(availableCharacters).slice(0, length);
-      setHandleText(characters.join(""));
-      return characters;
+      const creatPassword = (availableCharacters) => {
+        for (let i = 0; i < password.length - 4; i++) {
+          let random = Math.floor(Math.random() * availableCharacters.length);
+          seedPassword += availableCharacters[random];
+        }
+
+        return seedPassword;
+      };
+
+      let availableCharacters = "";
+      let seedPassword = "";
+      let randomNumbers = Math.floor(Math.random() * numbersArray.length);
+      let randomSymbols = Math.floor(Math.random() * symbolsArray.length);
+      let randomLowerCase = Math.floor(Math.random() * lowerCaseLetters.length);
+      let randomUppercase = Math.floor(Math.random() * upperCaseLetters.length);
+
+      if (numbers) {
+        seedPassword += numbersArray[randomNumbers];
+        availableCharacters += numbersArray;
+      }
+      if (symbols) {
+        seedPassword += symbolsArray[randomSymbols];
+
+        availableCharacters += symbolsArray;
+      }
+      if (lowercase) {
+        seedPassword += lowerCaseLetters[randomLowerCase];
+        availableCharacters += lowerCaseLetters;
+      }
+      if (uppercase) {
+        seedPassword += upperCaseLetters[randomUppercase];
+        availableCharacters += upperCaseLetters;
+      }
+      const result = creatPassword(availableCharacters);
+
+      var shuffled = result
+        .split("")
+        .sort(function () {
+          return 0.5 - Math.random();
+        })
+        .join("");
+
+      setHandleText(shuffled);
     };
 
     word(length, uppercase, lowercase, numbers, symbols);
