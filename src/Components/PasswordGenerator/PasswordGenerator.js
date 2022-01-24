@@ -58,15 +58,14 @@ function PasswordGenerator(props) {
 
     const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    const { length, uppercase, lowercase, numbers, symbols } = password;
+    let { length, uppercase, lowercase, numbers, symbols } = password;
 
     const word = (length, uppercase, lowercase, numbers, symbols) => {
       const creatPassword = (availableCharacters) => {
-        for (let i = 0; i < password.length - 4; i++) {
+        for (let i = 0; i < password.length - checkboxLength; i++) {
           let random = Math.floor(Math.random() * availableCharacters.length);
           seedPassword += availableCharacters[random];
         }
-
         return seedPassword;
       };
 
@@ -76,34 +75,50 @@ function PasswordGenerator(props) {
       let randomSymbols = Math.floor(Math.random() * symbolsArray.length);
       let randomLowerCase = Math.floor(Math.random() * lowerCaseLetters.length);
       let randomUppercase = Math.floor(Math.random() * upperCaseLetters.length);
+      let checkboxLength = 0;
 
       if (numbers) {
         seedPassword += numbersArray[randomNumbers];
         availableCharacters += numbersArray;
+        checkboxLength += 1;
       }
       if (symbols) {
         seedPassword += symbolsArray[randomSymbols];
-
         availableCharacters += symbolsArray;
+        checkboxLength += 1;
       }
       if (lowercase) {
         seedPassword += lowerCaseLetters[randomLowerCase];
         availableCharacters += lowerCaseLetters;
+        checkboxLength += 1;
       }
       if (uppercase) {
         seedPassword += upperCaseLetters[randomUppercase];
         availableCharacters += upperCaseLetters;
+        checkboxLength += 1;
       }
       const result = creatPassword(availableCharacters);
-
       var shuffled = result
         .split("")
         .sort(function () {
           return 0.5 - Math.random();
         })
         .join("");
+      // validate nếu người dùng không chọn điều kiện nào
+      if (!uppercase && !lowercase && !numbers && !symbols) {
+        alert("Vui lòng chọn ít nhất 1 điều kiện");
+        setHandleText("");
+      } else {
+        setHandleText(shuffled);
+      }
 
-      setHandleText(shuffled);
+      // validate nếu người dùng nhập độ dài mật khẩu nhỏ hơn 4.
+      if (password.length < 4) {
+        alert("Vui lòng chọn độ dài mật khẩu tối thiểu bằng 4");
+        setHandleText("");
+      } else {
+        setHandleText(shuffled);
+      }
     };
 
     word(length, uppercase, lowercase, numbers, symbols);
