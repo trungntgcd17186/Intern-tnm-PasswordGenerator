@@ -104,20 +104,24 @@ function PasswordGenerator(props) {
           return 0.5 - Math.random();
         })
         .join("");
+
       // validate nếu người dùng không chọn điều kiện nào
-      if (!uppercase && !lowercase && !numbers && !symbols) {
+      if (
+        password.length >= 4 &&
+        !uppercase &&
+        !lowercase &&
+        !numbers &&
+        !symbols
+      ) {
         alert("Vui lòng chọn ít nhất 1 điều kiện");
         setHandleText("");
       } else {
         setHandleText(shuffled);
       }
-
       // validate nếu người dùng nhập độ dài mật khẩu nhỏ hơn 4.
       if (password.length < 4) {
         alert("Vui lòng chọn độ dài mật khẩu tối thiểu bằng 4");
         setHandleText("");
-      } else {
-        setHandleText(shuffled);
       }
     };
 
